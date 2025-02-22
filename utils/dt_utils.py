@@ -8,8 +8,12 @@ def get_date():
     return date_to_str(datetime.now().date())
 
 
-def date_to_str(date):
+def date_to_str(date) -> str:
     return date.strftime(date_format)
+
+
+def str_to_date(date: str):
+    return datetime.strptime(date, date_format)
 
 
 def get_time():
@@ -39,3 +43,9 @@ def check_date(date):
     date = datetime.strptime(date, date_formating)
 
     return 1 if date < now() else 0
+
+
+def week_day(date: str):
+    date = str_to_date(date)
+    return date.weekday()
+

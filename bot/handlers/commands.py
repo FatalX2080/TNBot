@@ -21,7 +21,7 @@ async def cmd_state(message: Message):
     await message.answer('️❗️State: WORK❗️')
 
 
-# ----------------------------------------------------------------------------------------------------------♥
+# ----------------------------------------------------------------------------------------------------------
 
 @router.message(Command('add'))
 async def add(message: Message, dispatcher):
@@ -71,6 +71,9 @@ async def next_few_days(message: Message, dispatcher, vault):
 
     res_list = list(res_set)
     res_list.sort(key=lambda x: (x[4], x[5], x[2], x[3], x[0], x[1]))
+    for i in range(len(res_list)):
+        wd = WEEK_DAYS[mdatetime.week_day(res_list[i])]
+        res_list[i] += " {0}".format(wd)
     kb = nearest_days_poll_keyboard(res_list)
     text = "The next <b>{0}</b> days:".format(date_delta)
     return await message.answer(text, reply_markup=kb, parse_mode='HTML')

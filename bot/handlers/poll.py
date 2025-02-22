@@ -41,3 +41,11 @@ async def date_poll(call, dispatcher):
     dispatcher.add_info(get_id(call), 1, str_date)
     text = 'You choose: <b>{0}</b>\nSubject'.format(str_date)
     await call.message.answer(text, reply_markup=subject_poll_keyboard, parse_mode='HTML')
+
+
+@router2.callback_query(F.data.regexp(r"\d{1,2}_\d\d.\d\d.\d\d_00004"))  # correction
+async def check_poll(call, dispatcher, vault):
+    print(12, call.data)
+    await call.message.answer("The entry has been added")
+
+@router2.callback_query()
