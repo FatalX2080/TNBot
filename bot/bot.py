@@ -4,8 +4,7 @@ from aiogram import Bot, Dispatcher
 from .handlers import commands, handlers, poll
 from .middleware import DispatcherMiddleware, VDMiddleware
 
-from models import vault
-from models import dispatcher
+
 
 
 def routers_configuring(d, v):
@@ -20,13 +19,11 @@ def routers_configuring(d, v):
     return commands.router, poll.router, poll.router2, handlers.router
 
 
-async def main():
+async def main(dispatcher, vault):
     bot = Bot(token="8195953458:AAHSfuJKNFe33uiezHI30xC5Ln0RjTjlxtI")
     dp = Dispatcher()
 
-    events_dispatcher = dispatcher.Dispatcher()
-    events_vault = vault.Vault()
-    routers = routers_configuring(events_dispatcher, events_vault)
+    routers = routers_configuring(dispatcher, vault)
     dp.include_routers(*routers)
 
     await bot.delete_webhook(drop_pending_updates=True)

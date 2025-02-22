@@ -37,3 +37,13 @@ day_poll_keyboard = InlineKeyboardMarkup(
         ] for iex, day in enumerate(WEEK_DAYS)
     ]
 )
+
+
+def nearest_days_poll_keyboard(dates: list | tuple):
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(text=subj, callback_data='{0}_00004'.format(iex))
+            ] for iex, subj in enumerate(dates)
+        ]
+    )

@@ -1,15 +1,14 @@
 from datetime import datetime, time, timedelta
 
-
-#sbt = (time(*LEFT_BORDER), time(*RIGHT_BORDER))
+# sbt = (time(*LEFT_BORDER), time(*RIGHT_BORDER))
 date_format = '%d.%m.%y'
 
 
 def get_date():
-    return format_date(datetime.now().date())
+    return date_to_str(datetime.now().date())
 
 
-def format_date(date):
+def date_to_str(date):
     return date.strftime(date_format)
 
 
@@ -17,15 +16,17 @@ def get_time():
     return datetime.now().time()
 
 
+"""
 def check_send_time():
     return sbt[0] <= get_time() <= sbt[1]
+"""
 
 
 def now():
     return datetime.now()
 
 
-def days_delta(date):
+def days_delta(date: float | int):
     return timedelta(days=date)
 
 

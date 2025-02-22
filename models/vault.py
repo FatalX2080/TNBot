@@ -38,3 +38,7 @@ class Vault:
             information = '  · ' + '\n  · '.join(subjects_dict[key])
             base += key + '\n' + information + '\n'
         return base
+
+    def get_coming_days(self, dates_arr: set):
+        dates = set(self.__vault.keys())
+        return dates & dates_arr

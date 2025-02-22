@@ -37,7 +37,7 @@ async def date_poll(call, dispatcher):
     cur_day = now.weekday()
     delta = 6 - cur_day + day_id + 1 if cur_day >= day_id else day_id - cur_day + 1
     date = now + mdatetime.days_delta(delta)
-    str_date = mdatetime.format_date(date.date())
+    str_date = mdatetime.date_to_str(date.date())
     dispatcher.add_info(get_id(call), 1, str_date)
     text = 'You choose: <b>{0}</b>\nSubject'.format(str_date)
     await call.message.answer(text, reply_markup=subject_poll_keyboard, parse_mode='HTML')
