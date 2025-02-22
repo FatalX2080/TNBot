@@ -27,7 +27,4 @@ if __name__ == "__main__":
         task.cancel()
         while suppress(asyncio.CancelledError):
             loop.run_until_complete(task)
-"""
-    "owner_id": 1106806772,
-    "group_id": -1002258069773
-"""
+

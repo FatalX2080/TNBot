@@ -3,9 +3,9 @@ from aiogram.filters import Command
 from aiogram.types import Message
 
 from bot.keyboards import *
-from utils import help as utils
 from utils import dt_utils as mdatetime
-from utils.dt_utils import days_delta
+from utils import help as utils
+from config import GROUP_ID, BASE_MESSAGE_ID
 
 router = Router()
 
@@ -49,7 +49,7 @@ async def cmf_force_print(message: Message, dispatcher, vault):
 
 
 @router.message(Command('next_few_days'))
-async def next_few_days(message: Message, dispatcher, vault):
+async def cmd_next_few_days(message: Message, dispatcher, vault):
     date_delta = 7
     if message.text != '/next_few_days':
         date = message.text.lstrip('/next_few_days ')
@@ -77,3 +77,24 @@ async def next_few_days(message: Message, dispatcher, vault):
     kb = nearest_days_poll_keyboard(res_list)
     text = "The next <b>{0}</b> days:".format(date_delta)
     return await message.answer(text, reply_markup=kb, parse_mode='HTML')
+
+
+@router.message(Command('force_group_print'))
+async def cmf_force_print(message: Message, dispatcher, vault, bot):
+    # /force_group_print 28.02.25
+    print(message.text)
+    if message.text == 'force_group_print':
+        date = mdatetime.now()
+    else:
+        date = message.text.lstrip('/force_group_print ')
+        correct = mdatetime.check_date(date)
+        if correct: return Exception("Data not correct")
+
+    data = vault.get_format(date, 1)
+    if not data:
+        return await message.answer("Nothing is planned for this day")
+    data = "❗️FORCED❗️\n" + data
+    await bot.send_message(
+        chat_id=GROUP_ID, text=data, parse_mode='HTML',
+        reply_to_message_id=BASE_MESSAGE_ID
+    )

@@ -21,7 +21,7 @@
 - [x] Создать простейшего бота который запрашивает необходимую информацию
 - [ ] Создать средства отладки бота
 - [ ] CLI
-- [ ] Создать систему доступов к [командам](https://mastergroosha.github.io/aiogram-3-guide/filters-and-middlewares/)
+- [x] Создать систему доступов к [командам](https://mastergroosha.github.io/aiogram-3-guide/filters-and-middlewares/) (доделать доступ создателя)
 - [ ] Проработать ветвления общения с [пользователем](https://mastergroosha.github.io/aiogram-3-guide/fsm/)
 - [ ] Создать объект напоминаний
 - [ ] Поставить объект напоминаний в loop

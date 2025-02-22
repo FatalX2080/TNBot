@@ -41,16 +41,16 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Асинхронный доступ.md",
+                "file": "Отладка.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Асинхронный доступ"
+              "title": "Отладка"
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -210,11 +210,11 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "25b49fb72b423f2c",
+  "active": "54cfa91776303fa5",
   "lastOpenFiles": [
-    "Отладка.md",
-    "Асинхронный доступ.md",
     "Main.md",
+    "Асинхронный доступ.md",
+    "Отладка.md",
     "Библиотека для бота.md",
     "Функции бота.md",
     "ООП проекта.md",

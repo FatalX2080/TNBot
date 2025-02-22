@@ -1,3 +1,8 @@
+ADMINS = (
+    1106806772,
+)
+GROUP_ID = -1002258069773
+BASE_MESSAGE_ID = 4230
 
 SUBJECTS = (
     'Линал👄',
