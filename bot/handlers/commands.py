@@ -22,6 +22,8 @@ async def cmd_state(message: Message):
 
 
 # ----------------------------------------------------------------------------------------------------------
+#TODO доделать команды
+
 
 @router.message(Command('add'))
 async def add(message: Message, dispatcher):
@@ -31,13 +33,28 @@ async def add(message: Message, dispatcher):
     await message.answer(text, reply_markup=day_poll_keyboard, parse_mode='HTML')
 
 
-@router.message(Command('force_print'))
+@router.message(Command('del'))
+async def dell(message: Message, dispatcher):
+    await message.answer("It's just a dummy", parse_mode='HTML')
+
+
+@router.message(Command('log'))
+async def log(message: Message, dispatcher):
+    await message.answer("It's just a dummy", parse_mode='HTML')
+
+
+@router.message(Command('change'))
+async def change(message: Message, dispatcher):
+    await message.answer("It's just a dummy", parse_mode='HTML')
+
+
+@router.message(Command('print'))
 async def cmf_force_print(message: Message, dispatcher, vault):
     # /force_print 28.02.25
-    if message.text == 'force_print':
+    if message.text == '/print':
         date = mdatetime.now()
     else:
-        date = message.text.lstrip('/force_print ')
+        date = message.text.lstrip('/print ')
         correct = mdatetime.check_date(date)
         if correct: return Exception("Data not correct")
 
@@ -46,6 +63,27 @@ async def cmf_force_print(message: Message, dispatcher, vault):
         return await message.answer("Nothing is planned for this day")
     data = "❗️FORCED❗️\n" + data
     await message.answer(data, parse_mode='HTML')
+
+
+@router.message(Command('group_print'))
+async def cmf_force_group_print(message: Message, dispatcher, vault, bot):
+    # /force_group_print 28.02.25
+    print(message.text)
+    if message.text == '/group_print':
+        date = mdatetime.now()
+    else:
+        date = message.text.lstrip('/group_print ')
+        correct = mdatetime.check_date(date)
+        if correct: return Exception("Data not correct")
+
+    data = vault.get_format(date, 1)
+    if not data:
+        return await message.answer("Nothing is planned for this day")
+    data = "❗️FORCED❗️\n" + data
+    await bot.send_message(
+        chat_id=GROUP_ID, text=data, parse_mode='HTML',
+        reply_to_message_id=BASE_MESSAGE_ID
+    )
 
 
 @router.message(Command('next_few_days'))
@@ -77,24 +115,3 @@ async def cmd_next_few_days(message: Message, dispatcher, vault):
     kb = nearest_days_poll_keyboard(res_list)
     text = "The next <b>{0}</b> days:".format(date_delta)
     return await message.answer(text, reply_markup=kb, parse_mode='HTML')
-
-
-@router.message(Command('force_group_print'))
-async def cmf_force_print(message: Message, dispatcher, vault, bot):
-    # /force_group_print 28.02.25
-    print(message.text)
-    if message.text == 'force_group_print':
-        date = mdatetime.now()
-    else:
-        date = message.text.lstrip('/force_group_print ')
-        correct = mdatetime.check_date(date)
-        if correct: return Exception("Data not correct")
-
-    data = vault.get_format(date, 1)
-    if not data:
-        return await message.answer("Nothing is planned for this day")
-    data = "❗️FORCED❗️\n" + data
-    await bot.send_message(
-        chat_id=GROUP_ID, text=data, parse_mode='HTML',
-        reply_to_message_id=BASE_MESSAGE_ID
-    )
