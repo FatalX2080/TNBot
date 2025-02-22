@@ -17,7 +17,6 @@ class Vault:
     def append(self, other):
         date, subj, text = other.info()
         self.__vault.setdefault(date, []).append((subj, text))
-        print(self.__vault)
 
     def get(self, date):
         return self.__vault.get(date, None)

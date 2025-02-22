@@ -23,6 +23,7 @@
 - [ ] CLI
 - [x] Создать систему доступов к [командам](https://mastergroosha.github.io/aiogram-3-guide/filters-and-middlewares/) (доделать доступ создателя)
 - [ ] Проработать ветвления общения с [пользователем](https://mastergroosha.github.io/aiogram-3-guide/fsm/)
+- [ ] Создание класса ошибок
 - [ ] Создать объект напоминаний
 - [ ] Поставить объект напоминаний в loop
 - [ ] Протестировать

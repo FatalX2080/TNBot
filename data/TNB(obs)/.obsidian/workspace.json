@@ -49,8 +49,7 @@
               "title": "Отладка"
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -210,11 +209,11 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "54cfa91776303fa5",
+  "active": "57a9f8930dcf2269",
   "lastOpenFiles": [
+    "Отладка.md",
     "Main.md",
     "Асинхронный доступ.md",
-    "Отладка.md",
     "Библиотека для бота.md",
     "Функции бота.md",
     "ООП проекта.md",
