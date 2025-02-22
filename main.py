@@ -6,7 +6,6 @@ from bot import bot
 from models import vault
 from models import dispatcher
 
-from utils import cli
 
 
 async def main(d, v):

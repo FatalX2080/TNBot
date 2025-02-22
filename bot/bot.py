@@ -1,5 +1,6 @@
-import asyncio
+import asyncio, os
 from aiogram import Bot, Dispatcher
+from aiogram.fsm.strategy import FSMStrategy
 
 from .handlers import commands, handlers, poll
 from .middleware import DispatcherMiddleware, VDMiddleware
@@ -28,8 +29,8 @@ def routers_configuring(d, v):
 
 
 async def main(dispatcher, vault):
-    bot = Bot(token="8195953458:AAHSfuJKNFe33uiezHI30xC5Ln0RjTjlxtI")
-    dp = Dispatcher()
+    bot = Bot(token=os.environ['TOKEN'])
+    dp = Dispatcher(fsm_strategy=FSMStrategy.USER_IN_CHAT)
 
     routers = routers_configuring(dispatcher, vault)
     dp.include_routers(*routers)
