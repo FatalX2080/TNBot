@@ -35,5 +35,8 @@ class Dispatcher:
                 raise Exception
 
 
-    def get_event(self, uid):
+    def get(self, uid):
         return self.__news_dict.get(uid, None)
+
+    def pop(self, uid):
+        return self.__news_dict.pop(uid, None)

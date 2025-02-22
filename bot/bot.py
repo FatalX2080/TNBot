@@ -12,7 +12,7 @@ def routers_configuring(d, v):
     events_dp = DispatcherMiddleware(d)
     events_vdp = VDMiddleware(d, v)
 
-    commands.router.message.middleware(events_dp)
+    commands.router.message.middleware(events_vdp)
     handlers.router.message.middleware(events_dp)
     poll.router.callback_query.middleware(events_dp)
     poll.router2.callback_query.middleware(events_vdp)
