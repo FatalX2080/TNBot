@@ -30,7 +30,7 @@ async def text_stage(message: Message, dispatcher):
     uid = get_id(message)
     dispatcher.add_info(get_id(message), 3, text)
     message_text = '<b>Date:</b> {0}\n<b>Subject:</b> {1}\n<b>Text:</b> {2}'
-    entry = dispatcher.get_event(uid)
+    entry = dispatcher.get(uid)
     text = message_text.format(*entry.info())
     await message.answer(text, reply_markup=correct_poll_keyboard, parse_mode='HTML')
 

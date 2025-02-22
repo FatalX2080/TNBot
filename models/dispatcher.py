@@ -12,17 +12,23 @@ class Dispatcher:
     def __init__(self):
         self.__news_dict = {}
 
-    def user_exist(self, uid: int):
+    def get(self, uid: int):
+        return self.__news_dict.get(uid, None)
+
+    def pop(self, uid: int):
+        return self.__news_dict.pop(uid, None)
+
+    def check_for_exist(self, uid: int):
         return uid in self.__news_dict.keys()
 
     def create_news(self, user: int):
-        if self.user_exist(user):
+        if self.check_for_exist(user):
             return
         self.__news_dict[user] = event.Event()
 
     def add_info(self, user: int, stage: int, info: str):
-        if not self.user_exist(user):
-            raise Exception("User {0} not exist in {1}".format(user, self.user_exist))
+        if not self.check_for_exist(user):
+            raise Exception("User {0} not exist in {1}".format(user, self.check_for_exist))
 
         match stage:
             case 1:
@@ -33,7 +39,3 @@ class Dispatcher:
                 self.__news_dict[user].set_text(info)
             case _:
                 raise Exception
-
-
-    def get_event(self, uid):
-        return self.__news_dict.get(uid, None)
