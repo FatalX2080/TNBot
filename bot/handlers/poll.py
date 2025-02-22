@@ -45,7 +45,7 @@ async def date_poll(call, dispatcher):
 
 @router2.callback_query(F.data.regexp(r"\d{1,2}_\d\d.\d\d.\d\d_00004"))  # correction
 async def check_poll(call, dispatcher, vault):
-    print(12, call.data)
-    await call.message.answer("The entry has been added")
-
-@router2.callback_query()
+    date = call.data[2:10]
+    data = vault.get_format(date, 1)
+    data = "❗️FORCED❗️\n" + data
+    await call.message.answer(data, parse_mode='HTML')

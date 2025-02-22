@@ -48,16 +48,6 @@
               "icon": "lucide-file",
               "title": "Асинхронный доступ"
             }
-          },
-          {
-            "id": "25b49fb72b423f2c",
-            "type": "leaf",
-            "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Граф"
-            }
           }
         ],
         "currentTab": 1
@@ -83,7 +73,7 @@
                 "autoReveal": false
               },
               "icon": "lucide-folder-closed",
-              "title": "Файловый менеджер"
+              "title": "Files"
             }
           },
           {
@@ -111,6 +101,22 @@
               "state": {},
               "icon": "lucide-bookmark",
               "title": "Закладки"
+            }
+          }
+        ]
+      },
+      {
+        "id": "6b6f9407450cc513",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "25b49fb72b423f2c",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ]
@@ -196,15 +202,15 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Меню быстрого перехода": false,
-      "graph:Граф": false,
-      "canvas:Создать новый холст": false,
-      "daily-notes:Сегодняшняя заметка": false,
-      "templates:Вставить шаблон": false,
-      "command-palette:Открыть палитру команд": false
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
     }
   },
-  "active": "fe3cb0cbb80358d7",
+  "active": "25b49fb72b423f2c",
   "lastOpenFiles": [
     "Отладка.md",
     "Асинхронный доступ.md",
