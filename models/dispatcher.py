@@ -2,6 +2,13 @@ from . import event
 
 
 class Dispatcher:
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
     def __init__(self):
         self.__news_dict = {}
 
@@ -13,9 +20,9 @@ class Dispatcher:
             return
         self.__news_dict[user] = event.Event()
 
-    def add_info(self, user: int, stage: int, info:str):
+    def add_info(self, user: int, stage: int, info: str):
         if not self.user_exist(user):
-            return
+            raise Exception("User {0} not exist in {1}".format(user, self.user_exist))
 
         match stage:
             case 1:
@@ -26,3 +33,7 @@ class Dispatcher:
                 self.__news_dict[user].set_text(info)
             case _:
                 raise Exception
+
+
+    def get_event(self, uid):
+        return self.__news_dict.get(uid, None)
