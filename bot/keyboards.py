@@ -1,4 +1,5 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
 from config import SUBJECTS, WEEK_DAYS
 
 subject_poll_keyboard = InlineKeyboardMarkup(

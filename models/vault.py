@@ -1,7 +1,3 @@
-from bot.handlers.poll import subject_poll
-from utils.dt_utils import date_format
-
-
 class Vault:
     class Dispatcher:
         _instance = None
@@ -15,7 +11,7 @@ class Vault:
         self.__vault = {}
 
     def append(self, other):
-        date, subj, text = other.info()
+        date, subj, text = other['date'], other['subj'], other['text']
         self.__vault.setdefault(date, []).append((subj, text))
 
     def get(self, date):

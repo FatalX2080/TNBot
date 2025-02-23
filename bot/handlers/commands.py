@@ -1,11 +1,13 @@
-from aiogram import Router, F
-from aiogram.filters import Command
+from aiogram import Router
+from aiogram.filters import Command, StateFilter
+from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from bot.keyboards import *
+from config import GROUP_ID, BASE_MESSAGE_ID
 from utils import dt_utils as mdatetime
 from utils import help as utils
-from config import GROUP_ID, BASE_MESSAGE_ID
+from .strategy import AddNews
 
 router = Router()
 
@@ -25,31 +27,30 @@ async def cmd_state(message: Message):
 #TODO доделать команды
 
 
-@router.message(Command('add'))
-async def add(message: Message, dispatcher):
+@router.message(StateFilter(None), Command('add'))
+async def add(message: Message, state:FSMContext):
     uid = utils.get_id(message)
-    dispatcher.create_news(uid)
     text = 'Write a date (<i>dd.mm.yy</i>), or choose below'
     await message.answer(text, reply_markup=day_poll_keyboard, parse_mode='HTML')
-
+    await state.set_state(AddNews.date)
 
 @router.message(Command('del'))
-async def dell(message: Message, dispatcher):
+async def dell(message: Message):
     await message.answer("It's just a dummy", parse_mode='HTML')
 
 
 @router.message(Command('log'))
-async def log(message: Message, dispatcher):
+async def log(message: Message):
     await message.answer("It's just a dummy", parse_mode='HTML')
 
 
 @router.message(Command('change'))
-async def change(message: Message, dispatcher):
+async def change(message: Message):
     await message.answer("It's just a dummy", parse_mode='HTML')
 
 
 @router.message(Command('print'))
-async def cmf_force_print(message: Message, dispatcher, vault):
+async def cmf_force_print(message: Message, vault):
     # /force_print 28.02.25
     if message.text == '/print':
         date = mdatetime.now()
@@ -66,7 +67,7 @@ async def cmf_force_print(message: Message, dispatcher, vault):
 
 
 @router.message(Command('group_print'))
-async def cmf_force_group_print(message: Message, dispatcher, vault, bot):
+async def cmf_force_group_print(message: Message, vault, bot):
     # /force_group_print 28.02.25
     print(message.text)
     if message.text == '/group_print':
@@ -87,7 +88,7 @@ async def cmf_force_group_print(message: Message, dispatcher, vault, bot):
 
 
 @router.message(Command('next_few_days'))
-async def cmd_next_few_days(message: Message, dispatcher, vault):
+async def cmd_next_few_days(message: Message, vault):
     date_delta = 7
     if message.text != '/next_few_days':
         date = message.text.lstrip('/next_few_days ')
