@@ -4,7 +4,6 @@ from aiogram.types import Message
 
 from bot.keyboards import *
 from utils import dt_utils as mdatetime
-from utils.help import get_id
 from .strategy import AddNews
 
 router = Router()
