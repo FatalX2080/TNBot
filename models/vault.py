@@ -1,3 +1,6 @@
+from .exceptions import VaultExceptions
+
+
 class Vault:
     class Dispatcher:
         _instance = None
@@ -15,14 +18,24 @@ class Vault:
         self.__vault.setdefault(date, []).append((subj, text))
 
     def get(self, date):
-        return self.__vault.get(date, None)
+        data = self.__vault.get(date, None)
+        if data is None:
+            error_text = "Value {0} not found. Function get"
+            raise VaultExceptions(error_text.format(date))
+        return
 
     def pop(self, date):
-        return self.__vault.pop(date, None)
+        data = self.__vault.pop(date, None)
+        if data is None:
+            error_text = "Value {1} not found. Function pop"
+            raise VaultExceptions(error_text.format(date))
+        return data
 
     def get_format(self, date, forced=0):
         data = self.get(date) if forced else self.pop(date)
-        if not data: return None
+        if not data:
+            error_text = "Value {1} not found. Function get_format"
+            raise VaultExceptions(error_text.format(date))
         base = "News at <b>{0}({1})</b>:\n".format(date, len(data))
         subjects_dict = {}
 
