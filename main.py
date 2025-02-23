@@ -15,7 +15,6 @@ if __name__ == "__main__":
     print("Бот запущен")
 
     vault = vault.Vault()
-
     loop = asyncio.new_event_loop()
     loop.run_until_complete(main(vault))
     for task in asyncio.all_tasks(loop):
