@@ -1,12 +1,13 @@
 from aiogram import Router, F
-from aiogram.filters import Command
+from aiogram.filters import Command, StateFilter
 from aiogram.types import Message
+from aiogram.fsm.context import FSMContext
 
 from bot.keyboards import *
 from utils import dt_utils as mdatetime
-from utils import help as utils
 from config import GROUP_ID, BASE_MESSAGE_ID
-
+from utils import help as utils
+from .strategy import AddNews
 router = Router()
 
 
@@ -25,13 +26,13 @@ async def cmd_state(message: Message):
 #TODO доделать команды
 
 
-@router.message(Command('add'))
-async def add(message: Message, dispatcher):
+@router.message(StateFilter(None), Command('add'))
+async def add(message: Message, dispatcher, state:FSMContext):
     uid = utils.get_id(message)
     dispatcher.create_news(uid)
     text = 'Write a date (<i>dd.mm.yy</i>), or choose below'
     await message.answer(text, reply_markup=day_poll_keyboard, parse_mode='HTML')
-
+    await state.set_state(AddNews.date)
 
 @router.message(Command('del'))
 async def dell(message: Message, dispatcher):
