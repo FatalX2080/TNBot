@@ -1,6 +1,5 @@
 from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
-from aiogram.filters import StateFilter
 
 from bot.keyboards import *
 from config import SUBJECTS

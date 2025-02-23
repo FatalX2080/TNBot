@@ -2,10 +2,8 @@ import asyncio
 from contextlib import suppress
 
 from bot import bot
-
-from models import vault
 from models import dispatcher
-
+from models import vault
 
 
 async def main(d, v):

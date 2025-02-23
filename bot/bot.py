@@ -1,10 +1,12 @@
-import asyncio, os
+import asyncio
+import os
+
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.strategy import FSMStrategy
 
+from .filters import IsAdmin
 from .handlers import commands, handlers, poll
 from .middleware import DispatcherMiddleware, VDMiddleware
-from .filters import IsAdmin
 
 
 def routers_configuring(d, v):

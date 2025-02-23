@@ -1,13 +1,14 @@
-from aiogram import Router, F
+from aiogram import Router
 from aiogram.filters import Command, StateFilter
-from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
+from aiogram.types import Message
 
 from bot.keyboards import *
-from utils import dt_utils as mdatetime
 from config import GROUP_ID, BASE_MESSAGE_ID
+from utils import dt_utils as mdatetime
 from utils import help as utils
 from .strategy import AddNews
+
 router = Router()
 
 
