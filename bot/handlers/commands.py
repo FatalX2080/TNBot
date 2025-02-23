@@ -9,6 +9,8 @@ from utils import dt_utils as mdatetime
 from utils import help as utils
 from .strategy import AddNews
 
+from models.exceptions import VaultExceptions
+
 router = Router()
 
 
@@ -59,8 +61,9 @@ async def cmf_force_print(message: Message, vault):
         correct = mdatetime.check_date(date)
         if correct: return Exception("Data not correct")
 
-    data = vault.get_format(date, 1)
-    if not data:
+    try:
+        data = vault.get_format(date, 1)
+    except VaultExceptions:
         return await message.answer("Nothing is planned for this day")
     data = "❗️FORCED❗️\n" + data
     await message.answer(data, parse_mode='HTML')
@@ -77,8 +80,9 @@ async def cmf_force_group_print(message: Message, vault, bot):
         correct = mdatetime.check_date(date)
         if correct: return Exception("Data not correct")
 
-    data = vault.get_format(date, 1)
-    if not data:
+    try:
+        data = vault.get_format(date, 1)
+    except VaultExceptions:
         return await message.answer("Nothing is planned for this day")
     data = "❗️FORCED❗️\n" + data
     await bot.send_message(
@@ -102,9 +106,9 @@ async def cmd_next_few_days(message: Message, vault):
     for i in range(1, date_delta + 1):
         delta = mdatetime.days_delta(i)
         days_set.add(mdatetime.date_to_str(delta + now))
-
-    res_set = vault.get_coming_days(days_set)
-    if not res_set:
+    try:
+        res_set = vault.get_coming_days(days_set)
+    except VaultExceptions:
         text = "There are no events for the next <b>{0}</b> days".format(date_delta)
         return await message.answer(text, parse_mode='HTML')
 

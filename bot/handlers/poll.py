@@ -4,8 +4,9 @@ from aiogram.fsm.context import FSMContext
 from bot.keyboards import *
 from config import SUBJECTS
 from utils import dt_utils as mdatetime
-from utils.help import get_id
 from .strategy import AddNews
+
+from models.exceptions import VaultExceptions
 
 router = Router()
 router2 = Router()
@@ -49,6 +50,9 @@ async def date_poll(call, state: FSMContext):
 @router2.callback_query(F.data.regexp(r"\d{1,2}_\d\d.\d\d.\d\d_00004"))  # correction
 async def check_poll(call, vault):
     date = call.data[2:10]
-    data = vault.get_format(date, 1)
-    data = "❗️FORCED❗️\n" + data
-    await call.message.answer(data, parse_mode='HTML')
+    try:
+        data = vault.get_format(date, 1)
+        data = "❗️FORCED❗️\n" + data
+        await call.message.answer(data, parse_mode='HTML')
+    except VaultExceptions:
+        await call.message.answer("There is no any events")
