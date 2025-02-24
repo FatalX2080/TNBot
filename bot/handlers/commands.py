@@ -6,7 +6,6 @@ from aiogram.types import Message
 from bot.keyboards import *
 from config import GROUP_ID, BASE_MESSAGE_ID
 from utils import dt_utils as mdatetime
-from utils import help as utils
 from .strategy import AddNews
 
 from models.exceptions import VaultExceptions
@@ -31,7 +30,6 @@ async def cmd_state(message: Message):
 
 @router.message(StateFilter(None), Command('add'))
 async def add(message: Message, state:FSMContext):
-    uid = utils.get_id(message)
     text = 'Write a date (<i>dd.mm.yy</i>), or choose below'
     await message.answer(text, reply_markup=day_poll_keyboard, parse_mode='HTML')
     await state.set_state(AddNews.date)

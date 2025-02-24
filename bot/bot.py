@@ -1,7 +1,4 @@
-import asyncio
-import os
-
-from aiogram import Bot, Dispatcher
+from aiogram import Dispatcher
 from aiogram.fsm.strategy import FSMStrategy
 
 from .filters import IsAdmin
@@ -10,7 +7,6 @@ from .middleware import VaultMiddleware
 
 
 def routers_configuring(v):
-    print(os.environ["TOKEN"])
     events_vault = VaultMiddleware(v)
 
     cmd_r = commands.router
@@ -27,7 +23,6 @@ def routers_configuring(v):
 
 async def main(vault, bot):
     dp = Dispatcher(fsm_strategy=FSMStrategy.USER_IN_CHAT)
-
     routers = routers_configuring(vault)
     dp.include_routers(*routers)
 

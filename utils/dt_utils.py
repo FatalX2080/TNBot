@@ -1,21 +1,23 @@
 from datetime import datetime, time, timedelta
 
-date_format = '%d.%m.%y'
+from config import DATE_FORMAT
 
+
+# TODO даты генерируются неправильно
 
 def get_date():
     return date_to_str(datetime.now().date())
 
 
 def date_to_str(date) -> str:
-    return date.strftime(date_format)
+    return date.strftime(DATE_FORMAT)
 
 
 def str_to_date(date: str):
-    return datetime.strptime(date, date_format)
+    return datetime.strptime(date, DATE_FORMAT)
 
 
-def get_time():
+def get_time() -> time:
     return datetime.now().time()
 
 
@@ -35,7 +37,7 @@ def now():
     return datetime.now()
 
 
-def days_delta(date: float | int):
+def days_delta(date: float | int) -> timedelta:
     return timedelta(days=date)
 
 
@@ -50,6 +52,6 @@ def check_date(date):
     return 1 if date < now() else 0
 
 
-def week_day(date: str):
+def week_day(date: str) -> int:
     date = str_to_date(date)
     return date.weekday()

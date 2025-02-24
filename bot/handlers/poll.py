@@ -3,10 +3,9 @@ from aiogram.fsm.context import FSMContext
 
 from bot.keyboards import *
 from config import SUBJECTS
+from models.exceptions import VaultExceptions
 from utils import dt_utils as mdatetime
 from .strategy import AddNews
-
-from models.exceptions import VaultExceptions
 
 router = Router()
 router2 = Router()
