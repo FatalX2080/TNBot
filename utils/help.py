@@ -12,7 +12,18 @@ def config_logs():
         if not os.path.exists(LOG_PATH[0]):
             os.makedirs(LOG_PATH[0])
         path = os.path.join(*LOG_PATH)
-        if not os.path.exists(LOG_PATH[1]):
+        if not os.path.exists(path):
             open(path, 'w').close()
         logger.debug("Log file path: {0}".format(path))
         logger.add(path, enqueue=True, compression='.zip')
+
+
+def get_logs():
+    if not os.path.exists(LOG_PATH[0]):
+        os.makedirs(LOG_PATH[0])
+        return None
+    path = os.path.join(*LOG_PATH)
+    if not os.path.exists(path):
+        open(path, 'w').close()
+        return None
+    return path

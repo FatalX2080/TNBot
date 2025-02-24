@@ -1,7 +1,7 @@
 from aiogram import Router
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
-from aiogram.types import Message
+from aiogram.types import Message, FSInputFile
 
 from bot.keyboards import *
 from config import GROUP_ID, BASE_MESSAGE_ID
@@ -9,7 +9,7 @@ from utils import dt_utils as mdatetime
 from .strategy import AddNews
 from loguru import logger
 
-from utils.help import uinf
+from utils.help import uinf, get_logs
 from models.exceptions import VaultExceptions
 
 router = Router()
@@ -22,14 +22,11 @@ async def start(message: Message):
 
 @router.message(Command('state'))
 async def cmd_state(message: Message):
-    text = 'User: {0}({1}) check state'.format(*uinf(message))
-    logger.info(text)
+    logger.info('User: {0}({1}) check state'.format(*uinf(message)))
     await message.answer('️❗️State: WORK❗️')
 
 
 # ----------------------------------------------------------------------------------------------------------
-# TODO доделать команды
-
 
 @router.message(StateFilter(None), Command('add'))
 async def add(message: Message, state: FSMContext):
@@ -48,7 +45,11 @@ async def dell(message: Message):
 @router.message(Command('log'))
 async def log(message: Message):
     logger.warning("User {0}({1}) try get a log file".format(*uinf(message)))
-    await message.answer("It's just a dummy", parse_mode='HTML')
+    logs = get_logs()
+    if logs is None:
+        return await message.answer("Log file doesn't exist", parse_mode='HTML')
+    await message.answer("Here is you logs:")
+    await message.answer_document( FSInputFile(logs))
 
 
 @router.message(Command('change'))
@@ -59,7 +60,6 @@ async def change(message: Message):
 
 @router.message(Command('print'))
 async def cmf_force_print(message: Message, vault):
-    # /force_print 28.02.25
     if message.text == '/print':
         date = mdatetime.now()
     else:
