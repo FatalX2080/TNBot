@@ -1,5 +1,6 @@
 from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
+from loguru import logger
 
 from bot.keyboards import *
 from config import SUBJECTS
@@ -28,6 +29,7 @@ async def check_poll(call, vault, state: FSMContext):
         await call.message.answer("Choose an point for editing", reply_markup=editing_poll_keyboard)
     entry  = await state.get_data()
     vault.append(entry)
+    logger.info("Entry {0} has been added".format(tuple(entry.values())))
     await call.message.answer("The entry has been added")
     await state.clear()
 
@@ -42,12 +44,13 @@ async def date_poll(call, state: FSMContext):
     await state.set_state(AddNews.subj)
 
 
-@router2.callback_query(F.data.regexp(r"\d{1,2}_\d\d.\d\d.\d\d_00004"))  # correction
+@router2.callback_query(F.data.regexp(r"\d{1,2}_\d\d.\d\d.\d\d_00004"))  # force prin poll
 async def check_poll(call, vault):
     date = call.data[2:10]
     try:
         data = vault.get_format(date, 1)
         data = "❗️FORCED❗️\n" + data
+        logger.warning("FORCED print {0} date to user {1}".format(date, call.message.from_user.id))
         await call.message.answer(data, parse_mode='HTML')
     except VaultExceptions:
         await call.message.answer("There is no any events")

@@ -2,13 +2,16 @@ import asyncio, os
 from contextlib import suppress
 from dotenv import load_dotenv
 from aiogram import Bot
+from loguru import logger
 
 from bot import bot
 from models import vault
 from utils import notification
+from utils.help import config_logs
 
 
 async def main(v):
+    logger.debug('Starting main')
     load_dotenv(dotenv_path='.env')
     tg_bot = Bot(token=os.getenv('TOKEN'))
 
@@ -17,8 +20,7 @@ async def main(v):
 
 
 if __name__ == "__main__":
-    print("Бот запущен")
-
+    config_logs()
     vault = vault.Vault()
     loop = asyncio.new_event_loop()
     loop.run_until_complete(main(vault))

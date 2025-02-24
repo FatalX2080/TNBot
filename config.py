@@ -1,3 +1,6 @@
+FILE_LOGGING = True
+LOG_PATH = ("data", "logs.log")
+
 SEND_TIME = ((7, 0), (7, 10))
 BASE_DELAY = 5 * 60
 
