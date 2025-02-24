@@ -1,5 +1,5 @@
 import os
-from config import FILE_LOGGING, LOG_PATH
+from config import LOG_ACCESS, LOG_PATH
 from loguru import logger
 
 
@@ -8,7 +8,7 @@ def uinf(msg) -> tuple[str, int]:
 
 
 def config_logs():
-    if FILE_LOGGING:
+    if LOG_ACCESS:
         if not os.path.exists(LOG_PATH[0]):
             os.makedirs(LOG_PATH[0])
         path = os.path.join(*LOG_PATH)
