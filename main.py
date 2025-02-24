@@ -1,14 +1,19 @@
-import asyncio
+import asyncio, os
 from contextlib import suppress
+from dotenv import load_dotenv
+from aiogram import Bot
 
 from bot import bot
 from models import vault
+from utils import notification
 
 
 async def main(v):
-    asyncio.create_task(bot.main(v))
-    while True:
-        await asyncio.sleep(1)
+    load_dotenv(dotenv_path='.env')
+    tg_bot = Bot(token=os.getenv('TOKEN'))
+
+    asyncio.create_task(bot.main(v, tg_bot))
+    await notification.notify(v, tg_bot)
 
 
 if __name__ == "__main__":
@@ -21,4 +26,3 @@ if __name__ == "__main__":
         task.cancel()
         while suppress(asyncio.CancelledError):
             loop.run_until_complete(task)
-

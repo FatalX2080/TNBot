@@ -10,6 +10,7 @@ from .middleware import VaultMiddleware
 
 
 def routers_configuring(v):
+    print(os.environ["TOKEN"])
     events_vault = VaultMiddleware(v)
 
     cmd_r = commands.router
@@ -19,16 +20,12 @@ def routers_configuring(v):
 
     cmd_r.message.middleware(events_vault)
     poll_r2.callback_query.middleware(events_vault)
-    cmd_r.message.filter(IsAdmin())
-    hand_r.message.filter(IsAdmin())
-    poll_r1.callback_query.filter(IsAdmin())
-    poll_r2.callback_query.filter(IsAdmin())
-
+    for r in (cmd_r.message, hand_r.message, poll_r1.callback_query, poll_r2.callback_query):
+        r.filter(IsAdmin())
     return cmd_r, poll_r1, poll_r2, hand_r
 
 
-async def main(vault):
-    bot = Bot(token=os.environ['TOKEN'])
+async def main(vault, bot):
     dp = Dispatcher(fsm_strategy=FSMStrategy.USER_IN_CHAT)
 
     routers = routers_configuring(vault)
@@ -36,7 +33,3 @@ async def main(vault):
 
     await dp.start_polling(bot)
     await bot.delete_webhook(drop_pending_updates=True)
-
-
-if __name__ == "__main__":
-    asyncio.run(main())

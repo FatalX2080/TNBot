@@ -1,3 +1,10 @@
+#SEND_TIME = ((7, 0), (7, 10))
+#BASE_DELAY = 5 * 60
+
+SEND_TIME = ((23, 5), (23, 20))
+BASE_DELAY = int(0.5 * 60)
+
+
 ADMINS = (
     1106806772,
 )

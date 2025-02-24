@@ -13,25 +13,25 @@ class Vault:
     def __init__(self):
         self.__vault = {}
 
-    def append(self, other):
+    def append(self, other: dict[str, str, str]):
         date, subj, text = other['date'], other['subj'], other['text']
         self.__vault.setdefault(date, []).append((subj, text))
 
-    def get(self, date):
-        data = self.__vault.get(date, None)
-        if data is None:
+    def get(self, date: str) -> list:
+        data = self.__vault.get(date, [])
+        if not data:
             error_text = "Value {0} not found. Function get"
             raise VaultExceptions(error_text.format(date))
-        return
+        return data
 
-    def pop(self, date):
-        data = self.__vault.pop(date, None)
-        if data is None:
+    def pop(self, date: str) -> list:
+        data = self.__vault.pop(date, [])
+        if not data:
             error_text = "Value {1} not found. Function pop"
             raise VaultExceptions(error_text.format(date))
         return data
 
-    def get_format(self, date, forced=0):
+    def get_format(self, date: str, forced: int = 0) -> str:
         data = self.get(date) if forced else self.pop(date)
         if not data:
             error_text = "Value {1} not found. Function get_format"
@@ -47,6 +47,9 @@ class Vault:
             base += key + '\n' + information + '\n'
         return base
 
-    def get_coming_days(self, dates_arr: set):
+    def get_coming_days(self, dates_arr: set) -> set:
         dates = set(self.__vault.keys())
         return dates & dates_arr
+
+    def date_exist(self, date: str) -> bool:
+        return date in self.__vault.keys()

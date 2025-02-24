@@ -72,7 +72,6 @@ async def cmf_force_print(message: Message, vault):
 @router.message(Command('group_print'))
 async def cmf_force_group_print(message: Message, vault, bot):
     # /force_group_print 28.02.25
-    print(message.text)
     if message.text == '/group_print':
         date = mdatetime.now()
     else:

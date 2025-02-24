@@ -1,6 +1,5 @@
 from datetime import datetime, time, timedelta
 
-# sbt = (time(*LEFT_BORDER), time(*RIGHT_BORDER))
 date_format = '%d.%m.%y'
 
 
@@ -20,10 +19,16 @@ def get_time():
     return datetime.now().time()
 
 
-"""
-def check_send_time():
-    return sbt[0] <= get_time() <= sbt[1]
-"""
+def tuple_to_time(t: tuple) -> time:
+    return time(*t)
+
+
+def check_send_time(borders):
+    b = (
+        tuple_to_time(borders[0]),
+        tuple_to_time(borders[1])
+    )
+    return b[0] <= get_time() <= b[1]
 
 
 def now():
@@ -48,4 +53,3 @@ def check_date(date):
 def week_day(date: str):
     date = str_to_date(date)
     return date.weekday()
-
