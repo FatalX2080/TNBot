@@ -7,7 +7,9 @@ from bot.keyboards import *
 from config import GROUP_ID, BASE_MESSAGE_ID
 from utils import dt_utils as mdatetime
 from .strategy import AddNews
+from loguru import logger
 
+from utils.help import uinf
 from models.exceptions import VaultExceptions
 
 router = Router()
@@ -20,32 +22,38 @@ async def start(message: Message):
 
 @router.message(Command('state'))
 async def cmd_state(message: Message):
-    print(message.from_user.id, message.text)
+    text = 'User: {0}({1}) check state'.format(*uinf(message))
+    logger.info(text)
     await message.answer('️❗️State: WORK❗️')
 
 
 # ----------------------------------------------------------------------------------------------------------
-#TODO доделать команды
+# TODO доделать команды
 
 
 @router.message(StateFilter(None), Command('add'))
-async def add(message: Message, state:FSMContext):
+async def add(message: Message, state: FSMContext):
     text = 'Write a date (<i>dd.mm.yy</i>), or choose below'
+    logger.info("User {0}({1}) start adding a news".format(*uinf(message)))
     await message.answer(text, reply_markup=day_poll_keyboard, parse_mode='HTML')
     await state.set_state(AddNews.date)
 
+
 @router.message(Command('del'))
 async def dell(message: Message):
+    logger.warning("User {0}(1) try delete a news".format(*uinf(message)))
     await message.answer("It's just a dummy", parse_mode='HTML')
 
 
 @router.message(Command('log'))
 async def log(message: Message):
+    logger.warning("User {0}({1}) try get a log file".format(*uinf(message)))
     await message.answer("It's just a dummy", parse_mode='HTML')
 
 
 @router.message(Command('change'))
 async def change(message: Message):
+    logger.warning("User {0}({1}) try change a news".format(*uinf(message)))
     await message.answer("It's just a dummy", parse_mode='HTML')
 
 
@@ -57,14 +65,14 @@ async def cmf_force_print(message: Message, vault):
     else:
         date = message.text.lstrip('/print ')
         correct = mdatetime.check_date(date)
-        if correct: return Exception("Data not correct")
+        if correct: return await message.answer("Date ({0}) is not correct".format(date))
 
+    logger.warning("User {0}({1}) use FORCE print at ({2})".format(*uinf(message), date))
     try:
         data = vault.get_format(date, 1)
     except VaultExceptions:
         return await message.answer("Nothing is planned for this day")
-    data = "❗️FORCED❗️\n" + data
-    await message.answer(data, parse_mode='HTML')
+    await message.answer("❗️FORCED❗️\n" + data, parse_mode='HTML')
 
 
 @router.message(Command('group_print'))
@@ -75,15 +83,14 @@ async def cmf_force_group_print(message: Message, vault, bot):
     else:
         date = message.text.lstrip('/group_print ')
         correct = mdatetime.check_date(date)
-        if correct: return Exception("Data not correct")
-
+        if correct: return await message.answer("Date ({0}) is not correct".format(date))
+    logger.critical("User {0}({1}) use FORCE GROUP print at ({2})".format(*uinf(message), date))
     try:
         data = vault.get_format(date, 1)
     except VaultExceptions:
         return await message.answer("Nothing is planned for this day")
-    data = "❗️FORCED❗️\n" + data
     await bot.send_message(
-        chat_id=GROUP_ID, text=data, parse_mode='HTML',
+        chat_id=GROUP_ID, text="❗️FORCED❗️\n" + data, parse_mode='HTML',
         reply_to_message_id=BASE_MESSAGE_ID
     )
 
@@ -93,9 +100,8 @@ async def cmd_next_few_days(message: Message, vault):
     date_delta = 7
     if message.text != '/next_few_days':
         date = message.text.lstrip('/next_few_days ')
-        print(date)
         if not date.isdigit() or int(date) < 0:
-            raise Exception("Invalid date")
+            raise await message.answer("Days delta ({0}) is not correct".format(date))
         date_delta = int(date)
 
     days_set = set()

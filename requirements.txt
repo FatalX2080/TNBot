@@ -9,6 +9,7 @@ certifi==2025.1.31
 dotenv==0.9.9
 frozenlist==1.5.0
 idna==3.10
+loguru==0.7.3
 magic-filter==1.0.12
 multidict==6.1.0
 propcache==0.3.0
