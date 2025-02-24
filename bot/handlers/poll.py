@@ -34,12 +34,8 @@ async def check_poll(call, vault, state: FSMContext):
 
 @router2.callback_query(AddNews.date, F.data.regexp(r"\d_00002"))  # date
 async def date_poll(call, state: FSMContext):
-    day_id = int(call.data.split('_')[0])
-    now = mdatetime.now()
-    cur_day = now.weekday()
-    delta = 6 - cur_day + day_id + 1 if cur_day >= day_id else day_id - cur_day + 1
-    date = now + mdatetime.days_delta(delta)
-    str_date = mdatetime.date_to_str(date.date())
+    day = int(call.data.split('_')[0])
+    str_date = mdatetime.poll_date_calculating(day)
     await state.update_data(date=str_date)
     text = 'You choose: <b>{0}</b>\nSubject'.format(str_date)
     await call.message.answer(text, reply_markup=subject_poll_keyboard, parse_mode='HTML')

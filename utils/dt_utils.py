@@ -55,3 +55,11 @@ def check_date(date):
 def week_day(date: str) -> int:
     date = str_to_date(date)
     return date.weekday()
+
+
+def poll_date_calculating(day_id: int) -> str:
+    dt_now = datetime.now()
+    cur_day = dt_now.weekday()
+    delta = 6 - cur_day + day_id + 1 if cur_day >= day_id else day_id - cur_day
+    date = dt_now + days_delta(delta)
+    return date_to_str(date.date())
