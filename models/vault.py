@@ -1,17 +1,24 @@
 from .exceptions import VaultExceptions
-
+from utils.backup import Backup
 
 class Vault:
-    class Dispatcher:
-        _instance = None
+    _instance = None
 
-        def __new__(cls, *args, **kwargs):
-            if not cls._instance:
-                cls._instance = super().__new__(cls)
-            return cls._instance
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super().__new__(cls)
+        return cls._instance
 
     def __init__(self):
+        self.backup = Backup()
         self.__vault = {}
+        data = self.backup.load()
+        if data:
+            self.__vault = data
+
+
+    def __del__(self):
+        self.backup.save(self.__vault)
 
     def append(self, other: dict[str, str, str]):
         date, subj, text = other['date'], other['subj'], other['text']
