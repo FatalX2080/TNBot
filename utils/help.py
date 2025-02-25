@@ -1,6 +1,7 @@
 import os
 from config import LOG_ACCESS, LOG_PATH
 from loguru import logger
+from dotenv import load_dotenv
 
 
 def uinf(msg) -> tuple[str, int]:
@@ -28,7 +29,10 @@ def get_logs():
         return None
     return path
 
+
 def check_env():
+    dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+    load_dotenv(dotenv_path=dotenv_path)
     if os.getenv("TOKEN") is None:
         logger.critical("Environment variable 'TOKEN' is not set")
         raise KeyError("TOKEN environment variable not set")
