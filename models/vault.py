@@ -1,6 +1,8 @@
 from .exceptions import VaultExceptions
 from utils.backup import Backup
 
+# TODO сделать проверку на старые записи
+
 class Vault:
     _instance = None
 

@@ -27,3 +27,8 @@ def get_logs():
         open(path, 'w').close()
         return None
     return path
+
+def check_env():
+    if os.getenv("TOKEN") is None:
+        logger.critical("Environment variable 'TOKEN' is not set")
+        raise KeyError("TOKEN environment variable not set")

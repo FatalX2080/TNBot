@@ -37,3 +37,5 @@ class Backup:
                 logger.critical("Backup file not found")
             except json.decoder.JSONDecodeError:
                 logger.critical("Backup file not valid json")
+            except NameError:
+                logger.critical("open function not found")

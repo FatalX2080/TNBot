@@ -7,12 +7,13 @@ from loguru import logger
 from bot import bot
 from models import vault
 from utils import notification
-from utils.help import config_logs
+from utils.help import config_logs, check_env
 
 
 async def main(v):
     logger.debug('Starting main')
     load_dotenv(dotenv_path='.env')
+    check_env()
     tg_bot = Bot(token=os.getenv('TOKEN'))
 
     asyncio.create_task(bot.main(v, tg_bot))

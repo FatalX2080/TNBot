@@ -47,9 +47,8 @@ def check_date(date):
     if (int(day) > 31) or (int(month) > 12) or (year_len != 2 and year_len != 4):
         return 1
     date_formating = '%d.%m.%' + ('Y' if not year_len % 4 else 'y')
-    date = datetime.strptime(date, date_formating)
-
-    return 1 if date < now() else 0
+    date = datetime.strptime(date, date_formating).date()
+    return 1 if date < now().date() else 0
 
 
 def week_day(date: str) -> int:
