@@ -3,8 +3,6 @@ from datetime import datetime, time, timedelta
 from config import DATE_FORMAT
 
 
-# TODO даты генерируются неправильно
-
 def get_date():
     return date_to_str(datetime.now().date())
 

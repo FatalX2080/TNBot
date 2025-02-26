@@ -28,22 +28,23 @@ class Vault:
 
     def get(self, date: str) -> list:
         data = self.__vault.get(date, [])
+        #TODO будто странно ищет
         if not data:
-            error_text = "Value {0} not found. Function get"
+            error_text = "Value ({0}) not found. Function get"
             raise VaultExceptions(error_text.format(date))
         return data
 
     def pop(self, date: str) -> list:
         data = self.__vault.pop(date, [])
         if not data:
-            error_text = "Value {1} not found. Function pop"
+            error_text = "Value ({0}) not found. Function pop"
             raise VaultExceptions(error_text.format(date))
         return data
 
     def get_format(self, date: str, forced: int = 0) -> str:
         data = self.get(date) if forced else self.pop(date)
         if not data:
-            error_text = "Value {1} not found. Function get_format"
+            error_text = "Value ({0}) not found. Function get_format"
             raise VaultExceptions(error_text.format(date))
         base = "News at <b>{0}({1})</b>:\n".format(date, len(data))
         subjects_dict = {}

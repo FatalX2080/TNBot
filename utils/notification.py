@@ -27,7 +27,7 @@ async def notify(vault, bot):
                 except VaultExceptions:
                     logger.error("Data was not sanded")
             else:
-                logger.debug("Date does not exist")
+                logger.debug("Date ({0}) does not exist".format(date))
         elif send_flag and mdatetime.get_time() < mdatetime.tuple_to_time(SEND_TIME[0]):
             logger.debug("Resen a flag")
             send_flag = 0

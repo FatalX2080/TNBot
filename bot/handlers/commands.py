@@ -63,13 +63,13 @@ async def change(message: Message):
 @router.message(Command('print'))
 async def cmf_force_print(message: Message, vault):
     if message.text == '/print':
-        date = mdatetime.now()
+        date = mdatetime.get_date()
     else:
         date = message.text.lstrip('/print ')
         correct = mdatetime.check_date(date)
         if correct: return await message.answer("Date ({0}) is not correct".format(date))
-
-    logger.warning("User {0}({1}) use FORCE print at ({2})".format(*uinf(message), date))
+    log_text = "User {0}({1}) use FORCE print at ({2})"
+    logger.warning(log_text.format(*uinf(message), date))
     try:
         data = vault.get_format(date, 1)
     except VaultExceptions:
@@ -81,12 +81,13 @@ async def cmf_force_print(message: Message, vault):
 async def cmf_force_group_print(message: Message, vault, bot):
     # /force_group_print 28.02.25
     if message.text == '/group_print':
-        date = mdatetime.now()
+        date = mdatetime.get_date()
     else:
         date = message.text.lstrip('/group_print ')
         correct = mdatetime.check_date(date)
         if correct: return await message.answer("Date ({0}) is not correct".format(date))
-    logger.critical("User {0}({1}) use FORCE GROUP print at ({2})".format(*uinf(message), date))
+    log_text = "User {0}({1}) use FORCE GROUP print at ({2})"
+    logger.critical(log_text.format(*uinf(message), date.date()))
     try:
         data = vault.get_format(date, 1)
     except VaultExceptions:
