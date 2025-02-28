@@ -1,3 +1,5 @@
+import asyncio
+
 from aiogram import Router
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
@@ -97,9 +99,12 @@ async def cmf_force_group_print(message: Message, vault, bot):
     )
 
 @router.message(Command('shutdown'))
-async def cmd_shutdown(message: Message):
+async def cmd_shutdown(message: Message, vault):
     logger.critical("Shutdown command called")
-    await message.answer("It's template")
+    await message.answer("System was shutting down")
+    asyncio.get_event_loop().stop()
+    vault.__del__()
+    exit(-1)
 
 @router.message(Command('next_few_days'))
 async def cmd_next_few_days(message: Message, vault):
