@@ -19,6 +19,7 @@ router = Router()
 
 @router.message(Command('start'))
 async def start(message: Message):
+    print(message)
     await message.answer('It unfortunately still work')
 
 

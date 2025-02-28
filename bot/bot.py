@@ -2,7 +2,7 @@ from aiogram import Dispatcher
 from aiogram.fsm.strategy import FSMStrategy
 from loguru import logger
 
-from .filters import IsAdmin
+from .filters import IsAdmin, FromUser
 from .handlers import commands, handlers, poll
 from .middleware import VaultMiddleware
 
@@ -28,6 +28,6 @@ def routers_configuring(v):
     cmd_r.message.middleware(events_vault)
     poll_r.callback_query.middleware(events_vault)
     for r in (cmd_r.message, hand_r.message, poll_r.callback_query):
-        r.filter(IsAdmin())
+        r.filter(IsAdmin(), FromUser())
     logger.debug("Routers configured")
     return cmd_r, poll_r, hand_r

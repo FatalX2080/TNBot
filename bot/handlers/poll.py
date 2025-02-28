@@ -51,8 +51,7 @@ async def check_poll(call, vault):
         data = vault.request(date, 1)
         text = formatted_output(date, data)
         text = "❗️FORCED❗️\n" + text
-        #TODO скорее всего не верный id пользователя
-        logger.warning("FORCED print {0} date to user {1}".format(date, call.from_user.id))
+        logger.warning("FORCED print {0} date to user ({1})".format(date, call.from_user.id))
         await call.message.answer(text, parse_mode='HTML')
     except VaultExceptions:
         await call.message.answer("There is no any events")
