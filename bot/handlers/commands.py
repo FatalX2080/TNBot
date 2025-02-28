@@ -1,5 +1,3 @@
-import asyncio
-
 from aiogram import Router
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
@@ -11,7 +9,7 @@ from utils import dt_utils as mdatetime
 from .strategy import AddNews
 from loguru import logger
 
-from utils.help import uinf, get_logs
+from utils.help import uinf, get_logs, formatted_output
 from models.exceptions import VaultExceptions
 
 router = Router()
@@ -71,15 +69,15 @@ async def cmf_force_print(message: Message, vault):
     log_text = "User {0}({1}) use FORCE print at ({2})"
     logger.warning(log_text.format(*uinf(message), date))
     try:
-        data = vault.get_format(date, 1)
+        data = vault.request(date, 1)
+        text = formatted_output(date, data)
     except VaultExceptions:
         return await message.answer("Nothing is planned for this day")
-    await message.answer("❗️FORCED❗️\n" + data, parse_mode='HTML')
+    await message.answer("❗️FORCED❗️\n" + text, parse_mode='HTML')
 
 
 @router.message(Command('group_print'))
 async def cmf_force_group_print(message: Message, vault, bot):
-    # /force_group_print 28.02.25
     if message.text == '/group_print':
         date = mdatetime.get_date()
     else:
@@ -89,11 +87,12 @@ async def cmf_force_group_print(message: Message, vault, bot):
     log_text = "User {0}({1}) use FORCE GROUP print at ({2})"
     logger.critical(log_text.format(*uinf(message), date.date()))
     try:
-        data = vault.get_format(date, 1)
+        data = vault.request(date, 1)
+        text = formatted_output(date, data)
     except VaultExceptions:
         return await message.answer("Nothing is planned for this day")
     await bot.send_message(
-        chat_id=GROUP_ID, text="❗️FORCED❗️\n" + data, parse_mode='HTML',
+        chat_id=GROUP_ID, text="❗️FORCED❗️\n" + text, parse_mode='HTML',
         reply_to_message_id=BASE_MESSAGE_ID
     )
 
@@ -113,7 +112,7 @@ async def cmd_next_few_days(message: Message, vault):
 
     days_set = set()
     now = mdatetime.now()
-    for i in range(1, date_delta + 1):
+    for i in range(0, date_delta + 1):
         delta = mdatetime.days_delta(i)
         days_set.add(mdatetime.date_to_str(delta + now))
     try:

@@ -60,3 +60,18 @@ def poll_date_calculating(day_id: int) -> str:
     delta = 6 - cur_day + day_id + 1 if cur_day >= day_id else day_id - cur_day
     date = dt_now + days_delta(delta)
     return date_to_str(date.date())
+
+
+def date_comparison(a: str, b: str) -> int:
+    # 01.23.45 -> 452301
+    dt1 = dt_comp_prepare(a)
+    dt2 = dt_comp_prepare(b)
+    if dt1 < dt2:
+        return 1
+    if dt1 > dt2:
+        return -1
+    return 0
+
+
+def dt_comp_prepare(a: str):
+    return a[4], a[5], a[2], a[3], a[0], a[1]

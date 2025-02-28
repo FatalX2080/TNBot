@@ -6,10 +6,10 @@ from bot.keyboards import *
 from config import SUBJECTS
 from models.exceptions import VaultExceptions
 from utils import dt_utils as mdatetime
+from utils.help import formatted_output
 from .strategy import AddNews
 
 router = Router()
-router2 = Router()
 
 
 @router.callback_query(AddNews.subj, F.data.regexp(r"\d{1,2}_00000"))  # subjects
@@ -22,8 +22,8 @@ async def subject_poll(call, state: FSMContext):
     await state.set_state(AddNews.text)
 
 
-@router2.callback_query(AddNews.correct,F.data.regexp(r"[01]_00001"))  # correction
-async def check_poll(call, vault, state: FSMContext):
+@router.callback_query(AddNews.correct,F.data.regexp(r"[01]_00001"))  # correction
+async def check_poll(call, state: FSMContext, vault):
     is_correct = int(call.data.split('_')[0])
     if not is_correct:
         await call.message.answer("Choose an point for editing", reply_markup=editing_poll_keyboard)
@@ -34,7 +34,7 @@ async def check_poll(call, vault, state: FSMContext):
     await state.clear()
 
 
-@router2.callback_query(AddNews.date, F.data.regexp(r"\d_00002"))  # date
+@router.callback_query(AddNews.date, F.data.regexp(r"\d_00002"))  # date
 async def date_poll(call, state: FSMContext):
     day = int(call.data.split('_')[0])
     str_date = mdatetime.poll_date_calculating(day)
@@ -44,14 +44,15 @@ async def date_poll(call, state: FSMContext):
     await state.set_state(AddNews.subj)
 
 
-@router2.callback_query(F.data.regexp(r"\d{1,2}_\d\d.\d\d.\d\d_00004"))  # force prin poll
+@router.callback_query(F.data.regexp(r"\d{1,2}_\d\d.\d\d.\d\d_00004"))  # force prin poll
 async def check_poll(call, vault):
     date = call.data[2:10]
     try:
-        data = vault.get_format(date, 1)
-        data = "❗️FORCED❗️\n" + data
+        data = vault.request(date, 1)
+        text = formatted_output(date, data)
+        text = "❗️FORCED❗️\n" + text
         #TODO скорее всего не верный id пользователя
         logger.warning("FORCED print {0} date to user {1}".format(date, call.from_user.id))
-        await call.message.answer(data, parse_mode='HTML')
+        await call.message.answer(text, parse_mode='HTML')
     except VaultExceptions:
         await call.message.answer("There is no any events")
