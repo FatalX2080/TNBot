@@ -1,6 +1,9 @@
-import json, os
+import json
+import os
+
 from loguru import logger
-from config import BACKUP_PATH, BACKUP_ACCESS
+
+from config import BACKUP_PATH
 
 
 class Backup:
@@ -33,6 +36,7 @@ class Backup:
             try:
                 with open(self.path, 'w') as f:
                     json.dump(data, f)
+                logger.debug("{0} days have been recorded".format(len(data.keys())))
             except FileNotFoundError:
                 logger.critical("Backup file not found")
             except json.decoder.JSONDecodeError:

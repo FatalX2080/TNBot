@@ -1,4 +1,5 @@
 import asyncio
+
 from loguru import logger
 
 from config import BASE_DELAY, SEND_TIME, GROUP_ID, BASE_MESSAGE_ID

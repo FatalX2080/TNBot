@@ -1,6 +1,6 @@
-from .exceptions import VaultExceptions
 from utils.backup import Backup
 from utils.dt_utils import date_comparison
+from .exceptions import VaultExceptions
 
 
 class Vault:
@@ -32,6 +32,11 @@ class Vault:
     def _pop(self, date: str) -> list:
         return self.__vault.pop(date, [])
 
+    def delete(self, date: str, iex: int):
+        value = self.__vault[date].pop(iex)
+        if len(self.__vault[date]) == 0:
+            self.__vault.pop(date, [])
+        return value
     # ------------------------------------------------------------------------------------------------------
 
     def get_coming_days(self, dates_arr: set) -> set:
@@ -44,6 +49,11 @@ class Vault:
     # ------------------------------------------------------------------------------------------------------
 
     def request(self, date: str, forced: int = 0) -> list:
+        """
+        :param date: string date key with format dd.mm.yy
+        :param forced: 0 - news will delete, 1 - stay in vault
+        :return: news list
+        """
         if not self.date_exist(date):
             error_text = "Value ({0}) not found. Function request({1})"
             req_func = ('pop', 'get')[forced]

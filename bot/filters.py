@@ -1,6 +1,7 @@
 from aiogram import Bot, types
 from aiogram.filters import Filter
 from loguru import logger
+
 from config import ADMINS, ADMINS_DEBUG
 from utils.help import uinf
 
@@ -20,4 +21,6 @@ class FromUser(Filter):
         pass
 
     async def __call__(self, message: types.Message, bot: Bot) -> bool:
-        return message.chat.id > 0
+        if hasattr(message, 'chat'):
+            return message.chat.id > 0
+        return True

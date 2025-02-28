@@ -1,20 +1,37 @@
+# ----------------------------------------------------------------------------------------------------------
+"""
+/start
+/state
+/add
+/del
+/log
+/change
+/print
+/group print
+/shutdown
+/next_few_days
+"""
+# ----------------------------------------------------------------------------------------------------------
+
 import asyncio
 
 from aiogram import Router
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, FSInputFile
+from loguru import logger
 
 from bot.keyboards import *
 from config import GROUP_ID, BASE_MESSAGE_ID
-from utils import dt_utils as mdatetime
-from .strategy import AddNews
-from loguru import logger
-
-from utils.help import uinf, get_logs, formatted_output
 from models.exceptions import VaultExceptions
+from utils import dt_utils as mdatetime
+from utils.help import uinf, get_logs, formatted_output, get_nfd
+from .strategy import AddNews, DelNews
 
 router = Router()
+
+
+# ----------------------------------------------------------------------------------------------------------
 
 
 @router.message(Command('start'))
@@ -40,9 +57,31 @@ async def add(message: Message, state: FSMContext):
 
 
 @router.message(Command('del'))
-async def dell(message: Message):
+async def dell(message: Message, vault, state: FSMContext):
     logger.warning("User {0}(1) try delete a news".format(*uinf(message)))
-    await message.answer("It's just a dummy", parse_mode='HTML')
+    if message.text == '/del':
+        data = get_nfd(vault)
+        if data is None:
+            return await message.answer("There are no events for the next <b>7</b> days", parse_mode='HTML')
+        for i in range(len(data)):
+            wd = WEEK_DAYS[mdatetime.week_day(data[i])]
+            data[i] += " {0}".format(wd)
+        kb = nearest_days_delete_poll_keyboard(data)
+        text = "The next <b>7</b> days (TO DELETE):"
+        await state.set_state(DelNews.date)
+        await message.answer(text, reply_markup=kb, parse_mode='HTML')
+    else:
+        date = message.text.lstrip('/del ')
+        correct = mdatetime.check_date(date)
+        if correct: return await message.answer("Date ({0}) is not correct".format(date))
+        exist = vault.date_exist(date)
+        if not exist: return message.answer("Date ({0}) doesn't exist".format(date))
+        data = vault.request(date, 1)
+        kb = delete_events_poll_keyboard(data)
+        text = "This day has <b>{0}</b> entries choose one: ".format(len(data))
+        await state.set_state(DelNews.iex)
+        await state.update_data(date=date)
+        await message.answer(text, reply_markup=kb, parse_mode='HTML')
 
 
 @router.message(Command('log'))
@@ -52,7 +91,7 @@ async def log(message: Message):
     if logs is None:
         return await message.answer("Log file doesn't exist", parse_mode='HTML')
     await message.answer("Here is you logs:")
-    await message.answer_document( FSInputFile(logs))
+    await message.answer_document(FSInputFile(logs))
 
 
 @router.message(Command('change'))
@@ -99,6 +138,7 @@ async def cmf_force_group_print(message: Message, vault, bot):
         reply_to_message_id=BASE_MESSAGE_ID
     )
 
+
 @router.message(Command('shutdown'))
 async def cmd_shutdown(message: Message, vault):
     logger.critical("Shutdown command called")
@@ -107,31 +147,25 @@ async def cmd_shutdown(message: Message, vault):
     vault.__del__()
     exit(-1)
 
+
 @router.message(Command('next_few_days'))
 async def cmd_next_few_days(message: Message, vault):
-    date_delta = 7
+    delta = 7
     if message.text != '/next_few_days':
         date = message.text.lstrip('/next_few_days ')
         if not date.isdigit() or int(date) < 0:
-            raise await message.answer("Days delta ({0}) is not correct".format(date))
-        date_delta = int(date)
+            text = "Days delta ({0}) is not correct".format(date)
+            raise await message.answer(text)
+        delta = int(date)
 
-    days_set = set()
-    now = mdatetime.now()
-    for i in range(0, date_delta + 1):
-        delta = mdatetime.days_delta(i)
-        days_set.add(mdatetime.date_to_str(delta + now))
-    try:
-        res_set = vault.get_coming_days(days_set)
-    except VaultExceptions:
-        text = "There are no events for the next <b>{0}</b> days".format(date_delta)
+    data = get_nfd(vault, delta)
+    if data is None:
+        text = "There are no events for the next <b>{0}</b> days".format(delta)
         return await message.answer(text, parse_mode='HTML')
 
-    res_list = list(res_set)
-    res_list.sort(key=lambda x: (x[4], x[5], x[2], x[3], x[0], x[1]))
-    for i in range(len(res_list)):
-        wd = WEEK_DAYS[mdatetime.week_day(res_list[i])]
-        res_list[i] += " {0}".format(wd)
-    kb = nearest_days_poll_keyboard(res_list)
-    text = "The next <b>{0}</b> days:".format(date_delta)
-    return await message.answer(text, reply_markup=kb, parse_mode='HTML')
+    for i in range(len(data)):
+        wd = WEEK_DAYS[mdatetime.week_day(data[i])]
+        data[i] += " {0}".format(wd)
+    kb = nearest_days_poll_keyboard(data)
+    text = "The next <b>{0}</b> days:".format(data)
+    await message.answer(text, reply_markup=kb, parse_mode='HTML')

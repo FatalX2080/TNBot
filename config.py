@@ -1,6 +1,6 @@
 # PERMISSIONS ----------------------------------------------------------------------------------------------
 
-LOG_ACCESS = True
+LOG_ACCESS = False
 BACKUP_ACCESS = True
 ADMINS_DEBUG = True
 
