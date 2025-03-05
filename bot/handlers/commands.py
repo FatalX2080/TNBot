@@ -24,10 +24,10 @@ from loguru import logger
 from bot.keyboards import *
 from config import GROUP_ID, BASE_MESSAGE_ID
 from models.exceptions import VaultExceptions
-from utils import dt_utils as mdatetime
+from utils import mdatetime
 from utils.help import uinf, get_logs, formatted_output, get_nfd
 from .strategy import AddNews, DelNews
-
+from utils.clli import stop
 router = Router()
 
 
@@ -145,6 +145,7 @@ async def cmd_shutdown(message: Message, vault):
     await message.answer("System was shutting down")
     asyncio.get_event_loop().stop()
     vault.__del__()
+    stop()
     exit(-1)
 
 

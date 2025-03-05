@@ -4,7 +4,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from loguru import logger
 
-import utils.dt_utils as mdatetime
+from . import mdatetime
 from config import LOG_ACCESS, LOG_PATH
 from models.exceptions import VaultExceptions
 

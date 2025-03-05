@@ -1,5 +1,5 @@
 from utils.backup import Backup
-from utils.dt_utils import date_comparison
+from utils.mdatetime import date_comparison
 from .exceptions import VaultExceptions
 
 

@@ -3,7 +3,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from bot.keyboards import *
-from utils import dt_utils as mdatetime
+from utils import mdatetime
 from .strategy import AddNews
 
 router = Router()

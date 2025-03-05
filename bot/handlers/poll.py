@@ -5,7 +5,7 @@ from loguru import logger
 from bot.keyboards import *
 from config import SUBJECTS
 from models.exceptions import VaultExceptions
-from utils import dt_utils as mdatetime
+from utils import mdatetime
 from utils.help import formatted_output, uinf
 from .strategy import AddNews, DelNews
 

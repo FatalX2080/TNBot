@@ -4,7 +4,7 @@ from loguru import logger
 
 from config import BASE_DELAY, SEND_TIME, GROUP_ID, BASE_MESSAGE_ID
 from models.exceptions import VaultExceptions
-from utils import dt_utils as mdatetime
+from utils import mdatetime
 from utils.help import formatted_output
 
 
