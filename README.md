@@ -1,9 +1,7 @@
 # :speech_balloon: Telegram Notification Bot
----
-This bot is used to track events with a specific due date. Only admins registered with the project's config file have access.
+This bot is used to track events with a specific due date. Only admins registered with the project's config file have access. Interaction with telegram takes place through the ***aiogram*** library.
 
 # :loudspeaker: Usages
----
 Here is an up-to-date list of commands for interacting with the bot:
 ```
 /state - checking the bot's performance  
@@ -18,8 +16,7 @@ Here is an up-to-date list of commands for interacting with the bot:
 ```
 All commands except statistics can be executed only on behalf of the administrator. The ADMIN_DEBUG flag allows you to track all user IDs that are trying to interact with the bot.
 
-# :loudspeaker: Project Structure
----
+# :package: Project Structure
 ```
 TNBot
 ├── bot
@@ -49,8 +46,6 @@ TNBot
 ```
 
 # :bookmark_tabs: Futures
----
-
 - Add Record editing
 - Сopy warning
 - Сatching copies using FuzzyWuzzy
