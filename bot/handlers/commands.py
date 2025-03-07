@@ -12,7 +12,7 @@ from models.exceptions import VaultExceptions
 from utils import mdatetime
 from utils.help import uinf, get_logs, formatted_output, get_nfd
 from .strategy import AddNews, DelNews
-from utils.clli import stop
+
 router = Router()
 
 
@@ -130,7 +130,7 @@ async def cmd_shutdown(message: Message, vault):
     await message.answer("System was shutting down")
     asyncio.get_event_loop().stop()
     vault.__del__()
-    stop()
+    #stop()
     exit(-1)
 
 
@@ -145,7 +145,7 @@ async def cmd_next_few_days(message: Message, vault):
         delta = int(date)
 
     data = get_nfd(vault, delta)
-    if data is None:
+    if not data:
         text = "There are no events for the next <b>{0}</b> days".format(delta)
         return await message.answer(text, parse_mode='HTML')
 
@@ -153,5 +153,5 @@ async def cmd_next_few_days(message: Message, vault):
         wd = WEEK_DAYS[mdatetime.week_day(data[i])]
         data[i] += " {0}".format(wd)
     kb = nearest_days_poll_keyboard(data)
-    text = "The next <b>{0}</b> days:".format(data)
+    text = "The next <b>{0}</b> days:".format(delta)
     await message.answer(text, reply_markup=kb, parse_mode='HTML')

@@ -36,17 +36,24 @@ def run():
 
 
 def stop():
+    is_active =status()
+    if not is_active[0]: return
+    iex = is_active[1].index("PID: ")
+    res = is_active[1][iex:].split()[1]
+    print("PPID:" + res)
     subprocess.run(["systemctl", "disable", START_FILE_NAME])
+    subprocess.run(["kill", res])
     print("> Stopped process")
 
 
-def status():
+def status()->tuple:
     res = subprocess.run(["systemctl", "status", "bot.service"], capture_output=True, text=True)
     if "could not be found" in res.stderr:
         print("> Process isn't running")
+        return False, None
     else:
-        print("> It's running ({0})".format(res.stdout))
-
+        print("> It's running")
+    return True, res.stdout
 
 def main():
     time.sleep(0.5)
