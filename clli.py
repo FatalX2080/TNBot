@@ -26,20 +26,17 @@ def cli_help():
 
 def run():
     print("| Reload")
-    res = subprocess.run(["systemctl", "daemon-reload"], capture_output=True, text=True)
-    if "Access denied" in res.stderr:
-        print(r"\ Access denied")
-        return
+    subprocess.run(["systemctl", "daemon-reload"])
     print("| Enable")
     subprocess.run(["systemctl", "enable", START_FILE_NAME])
     print("| Start")
-    subprocess.run(["systemctl", "start", START_FILE_NAME])
+    subprocess.run(["systemctl", "start", "--now", START_FILE_NAME])
     print(r"\ Running success")
 
 
 def stop():
-    #TODO костыль
-    is_active =status()
+    # TODO костыль
+    is_active = status()
     if not is_active[0]: return
     iex = is_active[1].index("PID: ")
     res = is_active[1][iex:].split()[1]
@@ -49,7 +46,7 @@ def stop():
     print(r"\ Stopped process")
 
 
-def status()->tuple:
+def status() -> tuple:
     res = subprocess.run(["systemctl", "status", START_FILE_NAME], capture_output=True, text=True)
     if "could not be found" in res.stderr:
         print(r"\ Process isn't running")
@@ -57,8 +54,9 @@ def status()->tuple:
     print(r"\ It's running")
     return True, res.stdout
 
+
 def clear_data_folder():
-    #TODO не работает
+    # TODO не работает
     print("| Removing old data: ")
     for file in os.listdir("data"):
         f_name = os.path.join("data", file)
@@ -66,6 +64,7 @@ def clear_data_folder():
             print("| " + f_name)
             os.remove(f_name)
     print(r"\ End of deletion")
+
 
 def main():
     time.sleep(0.5)

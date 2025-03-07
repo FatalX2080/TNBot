@@ -1,5 +1,8 @@
 # Telegram Notification Bot
 This bot is used to track events with a specific due date. Only admins registered with the project's config file have access. Interaction with telegram takes place through the ***aiogram*** library.
+![PyCharm](https://img.shields.io/badge/pycharm-143?style=for-the-badge&logo=pycharm&logoColor=black&color=black&labelColor=green)
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)
 
 # :loudspeaker: Usages
 Here is an up-to-date list of commands for interacting with the bot:
@@ -50,3 +53,5 @@ TNBot
 - Сopy warning
 - Сatching copies using FuzzyWuzzy
 - Сonfiguring doker for fast deployment
+- Add birthdays 
+- Сreate auto backups by time 
