@@ -1,4 +1,4 @@
-# :speech_balloon: Telegram Notification Bot
+# Telegram Notification Bot
 This bot is used to track events with a specific due date. Only admins registered with the project's config file have access. Interaction with telegram takes place through the ***aiogram*** library.
 
 # :loudspeaker: Usages
