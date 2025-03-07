@@ -26,7 +26,9 @@ async def subject_poll(call, state: FSMContext):
 async def check_poll(call, state: FSMContext, vault):
     is_correct = int(call.data.split('_')[0])
     if not is_correct:
-        await call.message.answer("Choose an point for editing", reply_markup=editing_poll_keyboard)
+        # await call.message.answer("Choose an point for editing", reply_markup=editing_poll_keyboard)
+        await call.message.answer("The entry was deleted")
+        return await state.clear()
     entry = await state.get_data()
     vault.append(entry)
     logger.info("Entry {0} has been added".format(tuple(entry.values())))

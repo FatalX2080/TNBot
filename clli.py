@@ -58,8 +58,9 @@ def status()->tuple:
     return True, res.stdout
 
 def clear_data_folder():
+    #TODO не работает
     print("| Removing old data: ")
-    for file in os.listdir("."):
+    for file in os.listdir("data"):
         f_name = os.path.join("data", file)
         if file in EXCLUDED_FILES:
             print("| " + f_name)

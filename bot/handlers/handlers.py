@@ -9,11 +9,12 @@ from .strategy import AddNews
 router = Router()
 
 
-@router.message(AddNews.date, F.text.regexp(r"\d{2}.\d{2}.\d\d{1,3}"))
+@router.message(AddNews.date, F.text.regexp(r"\d{2}.\d{2}"))
 async def date_stage(message: Message, state: FSMContext):
     date_correct = mdatetime.check_date(message.text)
     if date_correct == 0:
-        entry_date = message.text
+        date = message.text + '.' + mdatetime.get_year()
+        entry_date = date
         entry_date = entry_date[:6] + entry_date[8:] if len(entry_date) > 8 else entry_date
         await state.update_data(date=entry_date)
         await message.answer("Choose a subject", reply_markup=subject_poll_keyboard)
@@ -26,8 +27,9 @@ async def date_stage(message: Message, state: FSMContext):
 async def text_stage(message: Message, state: FSMContext):
     text = message.text
     await state.update_data(text=text)
-    message_text = '<b>Date:</b> {0}\n<b>Subject:</b> {1}\n<b>Text:</b> {2}'
+    message_text = '<b>Date:</b> {0} ({1})\n<b>Subject:</b> {2}\n<b>Text:</b> {3}'
     entry = await state.get_data()
-    text = message_text.format(entry['date'], entry['subj'], entry['text'])
+    wday = WEEK_DAYS[mdatetime.week_day(entry['date'])]
+    text = message_text.format(entry['date'], wday, entry['subj'], entry['text'])
     await message.answer(text, reply_markup=correct_poll_keyboard, parse_mode='HTML')
     await state.set_state(AddNews.correct)

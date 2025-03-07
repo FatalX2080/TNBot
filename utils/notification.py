@@ -7,7 +7,7 @@ from models.exceptions import VaultExceptions
 from utils import mdatetime
 from utils.help import formatted_output
 
-
+# TODO Создать генератор бэкапов раз в час
 async def notify(vault, bot):
     send_flag = 0
     while True:

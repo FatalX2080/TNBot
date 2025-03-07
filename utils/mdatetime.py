@@ -39,6 +39,9 @@ def days_delta(date: float | int) -> timedelta:
 
 
 def check_date(date):
+    ln = len(date.split('.'))
+    if ln == 2:
+        date += '.' + get_year()
     day, month, year = date.split('.')
     year_len = len(year)
     if (int(day) > 31) or (int(month) > 12) or (year_len != 2 and year_len != 4):
@@ -74,3 +77,7 @@ def date_comparison(a: str, b: str) -> int:
 
 def dt_comp_prepare(a: str):
     return a[4], a[5], a[2], a[3], a[0], a[1]
+
+
+def get_year() -> str:
+    return str(datetime.now().year)

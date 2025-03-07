@@ -7,7 +7,7 @@ from loguru import logger
 from . import mdatetime
 from config import LOG_ACCESS, LOG_PATH
 from models.exceptions import VaultExceptions
-
+from config import LOG_ACCESS, BACKUP_ACCESS, ADMINS_DEBUG, SEND_TIME
 
 def uinf(msg) -> tuple[str, int]:
     return msg.from_user.username, msg.from_user.id
@@ -22,6 +22,12 @@ def config_logs():
             open(path, 'w').close()
         logger.debug("Log file path: {0}".format(path))
         logger.add(path, enqueue=True, compression='.zip')
+
+    logger_msg = 'starting params FILE_LOGGING [{0}] BACKUP [{1}] ADMIN_DEBUG [{2}] SEND_TIME [{3}]'
+    send_time = '{0}:{1}-{2}:{3}'.format(*SEND_TIME[0], *SEND_TIME[1])
+    format_params = (int(LOG_ACCESS), int(BACKUP_ACCESS), int(ADMINS_DEBUG), send_time)
+    logger.warning(logger_msg.format(*format_params))
+
 
 
 def get_logs():
